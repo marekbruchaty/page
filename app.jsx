@@ -302,14 +302,68 @@ function Hero({ theme, t }) {
 
 const SOCIALS = [
   { key: "linkedin", label: "linkedin",  handle: "/in/marekbruchaty", url: "https://www.linkedin.com/in/marekbruchaty/",
-    art: ["█       █", "█       █", "█       █", "█  ███  █", "█  █ █  █", "█  ███  █"] },
+    art: [
+      "█████████",
+      "█ █     █",
+      "█   ███ █",
+      "█ █ █ █ █",
+      "█ █ █ █ █",
+      "█████████"
+    ] },
   { key: "twitter",  label: "twitter / x", handle: "@mrkcrts",         url: "https://x.com/mrkcrts",
-    art: ["█  █  █  █", "█  █  █  █", "█   ██   █", "█   ██   █", "█  █  █  █", "█  █  █  █"] },
+    art: [
+      " █     █ ",
+      "  █   █  ",
+      "   █ █   ",
+      "    █    ",
+      "   █ █   ",
+      "  █   █  ",
+      " █     █ "
+    ] },
   { key: "medium",   label: "medium",     handle: "@marekbruchaty",    url: "https://medium.com/@marekbruchaty",
-    art: ["█        █", "█  █  █  █", "█  ██ ██ █", "█  █ █ █ █", "█  █   █ █", "█        █"] },
+    art: [
+      "█       █",
+      "██     ██",
+      "█ █   █ █",
+      "█  █ █  █",
+      "█   █   █",
+      "█       █"
+    ] },
   { key: "email",    label: "email",      handle: "marekbruchaty@gmail.com", url: "mailto:marekbruchaty@gmail.com",
-    art: ["█████████", "██     ██", "█ █   █ █", "█  █ █  █", "█   █   █", "█████████"] }
+    art: [
+      "█████████",
+      "█       █",
+      "█ █   █ █",
+      "█  █ █  █",
+      "█   █   █",
+      "█████████"
+    ] }
 ];
+
+function IconArt({ pattern, color }) {
+  const cell = 10;
+  const cols = pattern[0].length;
+  const rows = pattern.length;
+  return (
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: `repeat(${cols}, ${cell}px)`,
+      gridTemplateRows: `repeat(${rows}, ${cell}px)`,
+      width: cols * cell,
+      height: rows * cell,
+      flexShrink: 0
+    }}>
+      {pattern.flatMap((row, y) =>
+        row.split("").map((c, x) => (
+          <div key={`${x}-${y}`} style={{
+            background: c === "█" ? color : "transparent",
+            transition: "background .12s"
+          }} />
+        ))
+      )}
+    </div>
+  );
+}
 
 function SocialCard({ item, theme, idx }) {
   const [copied, setCopied] = useState(false);
@@ -347,12 +401,8 @@ function SocialCard({ item, theme, idx }) {
         <span>{hover ? "↗ open" : "—"}</span>
       </div>
 
-      <div style={{
-        fontFamily: "'VT323', monospace", fontSize: 14,
-        color: hover ? theme.accent : theme.dim, lineHeight: 1,
-        whiteSpace: "pre", height: 84, display: "flex", alignItems: "center"
-      }}>
-        {item.art.join("\n")}
+      <div style={{ height: 84, display: "flex", alignItems: "center" }}>
+        <IconArt pattern={item.art} color={hover ? theme.accent : theme.dim} />
       </div>
 
       <div>
